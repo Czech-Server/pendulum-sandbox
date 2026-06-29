@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Pendulum Calculator</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        #result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 4px;
+            border-left: 4px solid #2563eb;
+            display: none;
+            line-height: 1.6;
+        }
+        .error {
+            border-left-color: #ef4444 !important;
+            color: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+    <h2>Pendulum Period Simulator</h2>
+
+    <div class="input-group">
+        <label for="length">Length (meters):</label>
+        <input type="number" id="length" step="0.1" value="1.5" min="0">
+    </div>
+
+    <div class="input-group">
+        <label for="gravity">Gravity (m/s²):</label>
+        <input type="number" id="gravity" step="0.01" value="9.81">
+    </div>
+
+    <button onclick="calculatePeriod()">Calculate</button>
+
+    <div id="result-box"></div>
+
+    <script>
+        function calculatePeriod() {
+            // Retrieve values from the DOM
+            const length = parseFloat(document.getElementById('length').value);
+            const gravity = parseFloat(document.getElementById('gravity').value);
+            const resultBox = document.getElementById('result-box');
+
+            // Handle the ValueError equivalent
+            if (length < 0) {
+                resultBox.className = 'error';
+                resultBox.innerHTML = '<strong>Error:</strong> Pendulum length cannot be negative.';
+                resultBox.style.display = 'block';
+                return;
+            }
+
+            // JavaScript math translation
+            const period = 2 * Math.PI * Math.sqrt(length / gravity);
+
+            // Format and display the output
+            resultBox.className = '';
+            resultBox.innerHTML = `
+                <strong>--- Pendulum Simulation ---</strong><br>
+                Length: ${length} m<br>
+                Gravity: ${gravity} m/s²<br>
+                <strong>Period: ${period.toFixed(2)} seconds</strong>
+            `;
+            resultBox.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
