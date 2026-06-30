@@ -16,5 +16,7 @@ $T = 2 \pi \sqrt(L/g)$
 
 ## Ako spustiť kód
 
+Kód treba spustiť priamo v terminály
+
 ```bash
 python pendulum.py
