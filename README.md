@@ -1,23 +1,20 @@
-# Pendulum Period Calculator
+# Matematické kyvadlo
 
-A lightweight Python script that calculates the period of a simple pendulum based on its length and the acceleration due to gravity.
+Program počíta dĺžku periody matematického kyvadla v závislosti na dĺžke ramena $L$ a gravitačnom zrýchlení $g$
 
-## The Math
+## Matematika
 
-The calculation is based on the standard pendulum period formula:
-**T = 2π√(L/g)**
 
-* **T** = Period (seconds)
-* **L** = Length (meters)
-* **g** = Gravity (m/s²)
+$T = 2 \pi \sqrt(L/g)$
 
-## Prerequisites
+* **T** = perioda (s)
+* **L** = dĺžka (m)
+* **g** = gravitačné zrýchlenie (m/s²)
+
+## Prerekvizity
 * Python 3.x
-* No external libraries required (uses the built-in `math` module).
 
-## How to Run
-
-To run the default simulation, execute the script directly from your terminal:
+## Ako spustiť kód
 
 ```bash
 python pendulum.py
