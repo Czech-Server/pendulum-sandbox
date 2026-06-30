@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Pendulum Calculator</title>
+    <title>Movable Rail Pendulum Calculator</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -56,16 +56,26 @@
     </style>
 </head>
 <body>
-    <h2>Pendulum Period Simulator</h2>
+    <h2>Movable Rail Pendulum</h2>
 
     <div class="input-group">
         <label for="length">Length (meters):</label>
-        <input type="number" id="length" step="0.1" value="1.5" min="0">
+        <input type="number" id="length" step="0.1" value="1.5" min="0.1">
     </div>
 
     <div class="input-group">
         <label for="gravity">Gravity (m/s²):</label>
-        <input type="number" id="gravity" step="0.01" value="9.81">
+        <input type="number" id="gravity" step="0.01" value="9.81" min="0.1">
+    </div>
+
+    <div class="input-group">
+        <label for="m_rail">Mass of Rail/Cart (kg):</label>
+        <input type="number" id="m_rail" step="0.1" value="2.0" min="0.1">
+    </div>
+
+    <div class="input-group">
+        <label for="m_end">Mass of Pendulum (kg):</label>
+        <input type="number" id="m_end" step="0.1" value="1.0" min="0.1">
     </div>
 
     <button onclick="calculatePeriod()">Calculate</button>
@@ -77,18 +87,25 @@
             // Retrieve values from the DOM
             const length = parseFloat(document.getElementById('length').value);
             const gravity = parseFloat(document.getElementById('gravity').value);
+            const m_rail = parseFloat(document.getElementById('m_rail').value);
+            const m_end = parseFloat(document.getElementById('m_end').value);
             const resultBox = document.getElementById('result-box');
 
-            // Handle the ValueError equivalent
-            if (length < 0) {
+            // Input Validation
+            if (length <= 0 || gravity <= 0 || m_rail <= 0 || m_end <= 0) {
                 resultBox.className = 'error';
-                resultBox.innerHTML = '<strong>Error:</strong> Pendulum length cannot be negative.';
+                resultBox.innerHTML = '<strong>Error:</strong> All values must be positive numbers greater than zero.';
                 resultBox.style.display = 'block';
                 return;
             }
 
-            // JavaScript math translation
-            const period = 2 * Math.PI * Math.sqrt(length / gravity);
+            // Coupled oscillator math translation (small angle approximation)
+            // T = 2 * pi * sqrt((L / g) * (m_rail / (m_rail + m_end)))
+            const massRatio = m_rail / (m_rail + m_end);
+            const period = 2 * Math.PI * Math.sqrt((length / gravity) * massRatio);
+            
+            // Calculate fixed period for comparison
+            const fixedPeriod = 2 * Math.PI * Math.sqrt(length / gravity);
 
             // Format and display the output
             resultBox.className = '';
@@ -96,7 +113,10 @@
                 <strong>--- Pendulum Simulation ---</strong><br>
                 Length: ${length} m<br>
                 Gravity: ${gravity} m/s²<br>
-                <strong>Period: ${period.toFixed(2)} seconds</strong>
+                Rail Mass: ${m_rail} kg<br>
+                Pendulum Mass: ${m_end} kg<br><br>
+                <strong>Movable Rail Period: ${period.toFixed(3)} seconds</strong><br>
+                <small style="color: #666;">(A fixed pivot would be ${fixedPeriod.toFixed(3)} s)</small>
             `;
             resultBox.style.display = 'block';
         }
